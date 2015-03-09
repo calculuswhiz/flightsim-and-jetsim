@@ -198,7 +198,7 @@ void display(void)
     char accelbuf[64];
     char miscbuf[32];
     sprintf(posbuf, "Pos (m) x:%.2f y:%.2f z:%.2f", position[PLANE_X], position[PLANE_Y], position[PLANE_Z]);
-    sprintf(dirbuf, "Rot (deg) Y:%.2f P:%.2f R:%.2f", yaw*180/PI, -pitch*180/PI, -roll*180/PI);
+    sprintf(dirbuf, "Rot (deg) Y:%.2f P:%.2f R:%.2f", yaw*180/PI, pitch*180/PI, roll*180/PI);
     sprintf(velobuf, "Vel (m/s) x:%.2f y:%.2f z:%.2f", velocity[PLANE_X], velocity[PLANE_Y], velocity[PLANE_Z]);
     sprintf(accelbuf, "Acc (m/s^2) x:%.2f y:%.2f z:%.2f", accel[PLANE_X], accel[PLANE_Y], accel[PLANE_Z]);
     sprintf(forcebuf, "F (N) w:%.2f t:%.2f l:%.2f d:%.2f", weight, thrust, lift, drag);
@@ -351,6 +351,7 @@ void askey(unsigned char key, int x, int y)
         // case 'J':    // Less less gas
         // break;
         case 'q':    // Quit the simulation
+            printf("Ejected. Quitter.\n");
             glutDestroyWindow(winId);
         break;
         default:

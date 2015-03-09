@@ -14,13 +14,14 @@ plane::plane()
     
     // Control:
     thrust = 40e3;      // N (kg*m/s**2)
-    roll = 0; pitch = 0; yaw = 0;   // radians
+    // roll = 0; pitch = 0; yaw = 0;   // radians
+    roll = 0; pitch = PI; yaw = 0;   // radians
     
     // Mechanics:
-    position[PLANE_X]=500;     // m
+    position[PLANE_X]=3000;     // m
     position[PLANE_Y]=1000;     // m
-    position[PLANE_Z]=100;      // m
-    velocity[PLANE_X]=100;        // m/s
+    position[PLANE_Z]=500;      // m
+    velocity[PLANE_X]=-100;        // m/s
     velocity[PLANE_Y]=0;        // m/s
     velocity[PLANE_Z]=0;        // m/s
     
@@ -158,10 +159,10 @@ void plane::kill()
 void plane::ctrlPitch(float angle)
 {
     pitchPlane(angle*cos(roll));
-    // if(pitch>PI/2)
-        // yawPlane(angle*sin(-roll));
-    // else
+    if(cos(pitch)>0)
         yawPlane(angle*sin(roll));
+    else
+        yawPlane(-angle*sin(roll));
 }
 void plane::ctrlRoll(float angle)
 {
@@ -169,8 +170,16 @@ void plane::ctrlRoll(float angle)
 }
 void plane::ctrlYaw(float angle)
 {
-    pitchPlane(angle*sin(roll));
-    yawPlane(angle*cos(roll));
+    pitchPlane(-angle*sin(roll));
+    if(cos(pitch)>0)    // Normal operation
+    {
+        // pitchPlane(angle*sin(roll));
+        yawPlane(angle*cos(roll));
+    }
+    else
+    {
+        yawPlane(-angle*cos(roll));
+    }
 }
 
 void plane::injectControl(float rate)
