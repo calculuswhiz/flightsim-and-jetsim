@@ -19,10 +19,10 @@ plane::plane()
     // roll = 0; pitch = PI; yaw = 0;   // radians
     
     // Mechanics:
-    position[PLANE_X]=3000;     // m
+    position[PLANE_X]=1000;     // m
     position[PLANE_Y]=1000;     // m
-    position[PLANE_Z]=500;      // m
-    velocity[PLANE_X]=-100;        // m/s
+    position[PLANE_Z]=100;      // m
+    velocity[PLANE_X]=100;        // m/s
     velocity[PLANE_Y]=0;        // m/s
     velocity[PLANE_Z]=0;        // m/s
     
