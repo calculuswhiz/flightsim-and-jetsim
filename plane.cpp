@@ -158,9 +158,9 @@ void plane::kill()
 void plane::ctrlPitch(float angle)
 {
     pitchPlane(angle*cos(roll));
-    if(pitch>PI/2)
-        yawPlane(angle*sin(-roll));
-    else
+    // if(pitch>PI/2)
+        // yawPlane(angle*sin(-roll));
+    // else
         yawPlane(angle*sin(roll));
 }
 void plane::ctrlRoll(float angle)
@@ -289,4 +289,13 @@ float plane::getLift(void)
 float plane::getDrag(void)
 {
     return drag;
+}
+
+float plane::getTemp(void)
+{
+    return EARTH_T0 - EARTH_L * position[PLANE_Z];
+}
+float plane::getPressure(void)
+{
+    return EARTH_P0*pow(1-EARTH_L * position[PLANE_Z]/EARTH_T0, EARTH_G*EARTH_T0/EARTH_R);
 }

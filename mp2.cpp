@@ -197,21 +197,23 @@ void display(void)
     char posbuf[64], dirbuf[64], velobuf[64], forcebuf[64];
     char accelbuf[64];
     char miscbuf[32];
-    sprintf(posbuf, "Position x:%f y:%f z:%f", position[PLANE_X], position[PLANE_Y], position[PLANE_Z]);
-    sprintf(dirbuf, "Rotation Y:%f P:%f R:%f", yaw, pitch, roll);
-    sprintf(velobuf, "Velocity x:%f y:%f z:%f", velocity[PLANE_X], velocity[PLANE_Y], velocity[PLANE_Z]);
-    sprintf(accelbuf, "Accel x:%f y:%f z:%f", accel[PLANE_X], accel[PLANE_Y], accel[PLANE_Z]);
-    sprintf(forcebuf, "w:%f t:%f l:%f d:%f", weight, thrust, lift, drag);
+    sprintf(posbuf, "Pos (m) x:%.2f y:%.2f z:%.2f", position[PLANE_X], position[PLANE_Y], position[PLANE_Z]);
+    sprintf(dirbuf, "Rot (deg) Y:%.2f P:%.2f R:%.2f", yaw*180/PI, -pitch*180/PI, -roll*180/PI);
+    sprintf(velobuf, "Vel (m/s) x:%.2f y:%.2f z:%.2f", velocity[PLANE_X], velocity[PLANE_Y], velocity[PLANE_Z]);
+    sprintf(accelbuf, "Acc (m/s^2) x:%.2f y:%.2f z:%.2f", accel[PLANE_X], accel[PLANE_Y], accel[PLANE_Z]);
+    sprintf(forcebuf, "F (N) w:%.2f t:%.2f l:%.2f d:%.2f", weight, thrust, lift, drag);
     renderText(0, 13, posbuf);
     renderText(0, 26, dirbuf);
     renderText(0, 39, velobuf);
     renderText(0, 52, accelbuf);
     renderText(0, 65, forcebuf);
-    sprintf(miscbuf, "Gas: %f spd: %f", yourPlane.getGas(), speed);
+    sprintf(miscbuf, "F>%.2fL v>%.2fm/s", yourPlane.getGas(), speed);
     renderText(0, 78, miscbuf);
+    sprintf(miscbuf, "%.2fkPa %.2fCelsius", yourPlane.getPressure()/1000, yourPlane.getTemp()-273.15);
+    renderText(0, 91, miscbuf);
     
     if(yourPlane.getGas()<=0)
-        renderText(0, 100, "Out of gas :(");
+        renderText(0, 150, "Out of gas :(");
     
     glutPostRedisplay();
     
@@ -266,12 +268,12 @@ void display(void)
     if(specialPressed[PRESS_DOWN])
     {
         // printf("DOWN\n");
-        yourPlane.ctrlPitch(-PI/180/2);
+        yourPlane.ctrlPitch(-PI/180/4);
     }
     else if(specialPressed[PRESS_UP])
     {
         // printf("UP\n");
-        yourPlane.ctrlPitch(PI/180/2);
+        yourPlane.ctrlPitch(PI/180/4);
     }
     
     // Time stuff:

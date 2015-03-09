@@ -67,6 +67,9 @@ public:
     float getLift(void);
     float getDrag(void);
     
+    float getTemp(void);
+    float getPressure(void);
+    
     int isDead();
     
 private:

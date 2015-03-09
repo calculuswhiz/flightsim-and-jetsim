@@ -1,3 +1,5 @@
+Note that this was just a rough draft for brainstorming. Ideas in this file have evolved a lot.
+
 Objects:
     Plane:
         Properties:
