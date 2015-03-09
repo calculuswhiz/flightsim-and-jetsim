@@ -1,0 +1,75 @@
+Objects:
+    Plane:
+        Properties:
+            air density (height dependent)
+            mass (intrinsic)
+            perspective (intrinsic)
+            Forces:
+                weight (from mass)
+                lift (wing tilt vs speed)
+                drag (air density, wing angle)
+                thrust (fuel, controllable)
+            g-force - may cause perspective distortion/death (realism! yay!)
+                -3 or lower = redout after a couple seconds (more = die), recover if come back. I don't know exactly how long it is, so let's say it's the same as blackout.
+                6 or higher = blackout after a couple seconds, recover if come back.
+                    Total = 12 second recovery
+                    Partial = 15 second recovery
+                25 = die
+            side-g-force - 20g 10 sec, 10g 1 min, 6g for 10 min, etc.
+            Newtonian:
+                r(t), v(t), a(t) (Vectors: <i,j,k>) each with magnitudes.
+                momentum (mass and velocity)
+                KE (same)
+            fuel:
+                Also has mass (run out = no more thrust)
+                Rate depends on speed
+            wing tilts (controlled):
+                has a range of motion
+            HUD:
+                displays relevant data, warnings
+            rotational: depends on wing tilts
+                Pitch (x axis)
+                Roll (y axis)
+                Yaw (z axis) ? Will I need this?
+                rotational momentum
+        Control:
+            thruster output up/down - k/j
+                Fuel consumption goes up to a max amount.
+            wing tilts - arrow keys:
+                up - angle up both (pitch down)
+                down - angle down both (pitch up)
+                left - up left, down right (roll left)
+                right - down left, up right (roll right)
+                Will return naturally. Tends down a bit to keep flight stable.
+
+Simulation terminates on:
+    Fall below sea level
+    Die from g-force
+    Out of bounds? Or just wrap around.
+    Quit (escape)
+
+Formulas:
+    Fuel consumed at x L/s. (Adjustible) Energy rating of y kJ/L.
+    P = x*y kJ/s.
+        P*t = 1/2*m*v^2 so...
+    v = sqrt(2*P*t/m)
+    a = dv/dt (sampled)
+    d = v*t
+    Lift = .5 * \rho * v^2 * A * C_L
+        rho = p*M/R/T
+            p = p_0*(1-L*height/288.15)^(g*T_0/R/L)
+                p_0 = 101325
+                L = .0065
+                g = 9.80665
+                T_0 = 288.15
+                R = 8.31447
+            M = .0289644
+            T = T_0 - L*height
+        v = speed of plane
+        A = some constant area of wing
+        C_L from this graph:  Maybe assume .5
+            http://en.wikipedia.org/wiki/Lift_coefficient#mediaviewer/File:Lift_curve.svg
+    Weight = m*g
+    Thrust = m*a
+    Drag = .5 * rho * v^2 * C_D * A
+        See wikipedia for C_D
