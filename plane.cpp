@@ -14,8 +14,9 @@ plane::plane()
     
     // Control:
     thrust = 40e3;      // N (kg*m/s**2)
-    // roll = 0; pitch = 0; yaw = 0;   // radians
-    roll = 0; pitch = PI; yaw = 0;   // radians
+    roll = 0; pitch = 0; yaw = 0;   // radians
+    // PI mode for testing:
+    // roll = 0; pitch = PI; yaw = 0;   // radians
     
     // Mechanics:
     position[PLANE_X]=3000;     // m
