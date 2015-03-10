@@ -17,6 +17,7 @@
 #define  PRESS_CTRL_L   (0x0072-0x64)
 #define  PRESS_CTRL_R   (0x0073-0x64)
 
+#define  OCEANSIZE      8000
 
 int nFPS = 30;
 clock_t startClock=0,curClock;
@@ -66,44 +67,44 @@ void timer(int v)
 void drawOcean(void)
 {
     // glLoadIdentity();
-    float oceanSize = 4000;
+    // float oceanSize = OCEANSIZE;
     glColor3f (.5, .5, 1.0);
     glBegin(GL_POLYGON);
         glVertex3f(0,0,0);
-        glVertex3f(0,oceanSize,0);
-        glVertex3f(oceanSize,oceanSize,0);
-        glVertex3f(oceanSize,0,0);
+        glVertex3f(0,OCEANSIZE,0);
+        glVertex3f(OCEANSIZE,OCEANSIZE,0);
+        glVertex3f(OCEANSIZE,0,0);
     glEnd();
     
     glBegin(GL_TRIANGLES);
         glColor3f(.5, 0, 0);
         glVertex3f(0, 0, 0);
-        glVertex3f(0, oceanSize, 0);
-        glVertex3f(0, oceanSize/2, oceanSize/2);
+        glVertex3f(0, OCEANSIZE, 0);
+        glVertex3f(0, OCEANSIZE/2, OCEANSIZE/2);
         
         glColor3f(.5, .5, 0);
         glVertex3f(0, 0, 0);
-        glVertex3f(oceanSize, 0, 0);
-        glVertex3f(oceanSize/2, 0, oceanSize/2);
+        glVertex3f(OCEANSIZE, 0, 0);
+        glVertex3f(OCEANSIZE/2, 0, OCEANSIZE/2);
         
         glColor3f(0, .5, 0);
-        glVertex3f(oceanSize, 0, 0);
-        glVertex3f(oceanSize, oceanSize, 0);
-        glVertex3f(oceanSize, oceanSize/2, oceanSize/2);
+        glVertex3f(OCEANSIZE, 0, 0);
+        glVertex3f(OCEANSIZE, OCEANSIZE, 0);
+        glVertex3f(OCEANSIZE, OCEANSIZE/2, OCEANSIZE/2);
         
         glColor3f(0, .5, .5);
-        glVertex3f(0, oceanSize, 0);
-        glVertex3f(oceanSize, oceanSize, 0);
-        glVertex3f(oceanSize/2, oceanSize, oceanSize/2);
+        glVertex3f(0, OCEANSIZE, 0);
+        glVertex3f(OCEANSIZE, OCEANSIZE, 0);
+        glVertex3f(OCEANSIZE/2, OCEANSIZE, OCEANSIZE/2);
     glEnd();
     
     float dc[2];
     
     glColor3f(0, 1, 0);
     glBegin(GL_POINTS);
-        for(dc[0]=0; dc[0]<oceanSize; dc[0]+=10)
+        for(dc[0]=0; dc[0]<OCEANSIZE; dc[0]+=10)
         {
-            for(dc[1]=0; dc[1]<oceanSize; dc[1]+=10)
+            for(dc[1]=0; dc[1]<OCEANSIZE; dc[1]+=10)
             {
                 glVertex3f(dc[0],dc[1],0);
             }
@@ -176,6 +177,21 @@ void display(void)
     sprintf(miscbuf, "%.2fkPa %.2fCelsius", yourPlane.getPressure()/1000, yourPlane.getTemp()-273.15);
     renderText(0, 91, miscbuf);
     
+    // if(sin(yaw)<=sqrt(2)/2 && sin(yaw)>=-sqrt(2)/2)
+    // {
+    //     if(cos(yaw) > 0)
+    //         renderText(400, 100, "E");
+    //     else if (cos(yaw)<0)
+    //         renderText(400, 100, "W");
+    // }
+    // else if(cos(yaw)<sqrt(2)/2 && cos(yaw)>-sqrt(2))
+    // {
+    //     if(sin(yaw)>0)
+    //         renderText(400, 100, "N");
+    //     else if(sin(yaw)<0)
+    //         renderText(400, 100, "S");
+    // }
+    
     // Out of gas!!
     if(yourPlane.getGas()<=0)
         renderText(0, 150, "Out of gas. Recommend eject with 'q'");
@@ -245,7 +261,7 @@ void display(void)
         glutDestroyWindow(winId);
         return;
     }
-    if(position[PLANE_X]>4000 || position[PLANE_Y]>4000 || position[PLANE_X]<0 || position[PLANE_Y] < 0)
+    if(position[PLANE_X]>OCEANSIZE || position[PLANE_Y]>OCEANSIZE || position[PLANE_X]<0 || position[PLANE_Y] < 0)
     {
         printf("Out of bounds: self-destructed.\n");
         glutDestroyWindow(winId);
