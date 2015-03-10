@@ -20,7 +20,7 @@ plane::plane()
     
     // Mechanics:
     position[PLANE_X]=2500;     // m
-    position[PLANE_Y]=2500;     // m
+    position[PLANE_Y]=5000;     // m
     position[PLANE_Z]=100;      // m
     velocity[PLANE_X]=100;        // m/s
     velocity[PLANE_Y]=0;        // m/s
