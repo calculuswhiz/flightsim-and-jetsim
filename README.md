@@ -40,3 +40,6 @@ README (Copy-pasted from compass)
 
 - Location of Video Demo
     - http://youtu.be/elCjoBffddc
+
+- Github repo:
+    - https://github.com/calculuswhiz/flightsim-and-jetsim
