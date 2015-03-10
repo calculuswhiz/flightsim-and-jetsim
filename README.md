@@ -28,7 +28,7 @@ README (Copy-pasted from compass)
         - You have limited fuel, which has mass. Running out of fuel will kill the thrust output.
         - Aerodynamic forces will be at play. (Weight, lift, thrust, drag).
         - Crashing into the ocean will terminate the simulation.
-        - Flying out of bounds will terminate the simulation.
+        - Flying out of bounds will terminate the simulation. (Boundaries are marked by mega-sized, ridiculously-colored triangles.)
         - You have momentum. Turning right around will cause a stall and will more than likely prove fatal.
         - Weight varies with mass, always pointing down.
         - Thrust is controlled by user input. Always points forward.
