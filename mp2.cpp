@@ -17,7 +17,8 @@
 #define  PRESS_CTRL_L   (0x0072-0x64)
 #define  PRESS_CTRL_R   (0x0073-0x64)
 
-#define  OCEANSIZE      8000
+#define  OCEANSIZE      10000
+#define  MARKER_SPACING   20
 
 int nFPS = 30;
 clock_t startClock=0,curClock;
@@ -102,9 +103,9 @@ void drawOcean(void)
     
     glColor3f(0, 1, 0);
     glBegin(GL_POINTS);
-        for(dc[0]=0; dc[0]<OCEANSIZE; dc[0]+=10)
+        for(dc[0]=0; dc[0]<OCEANSIZE; dc[0]+=MARKER_SPACING)
         {
-            for(dc[1]=0; dc[1]<OCEANSIZE; dc[1]+=10)
+            for(dc[1]=0; dc[1]<OCEANSIZE; dc[1]+=MARKER_SPACING)
             {
                 glVertex3f(dc[0],dc[1],0);
             }
