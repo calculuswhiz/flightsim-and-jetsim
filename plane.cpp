@@ -10,7 +10,7 @@ plane::plane()
     
     fuel = 10040;       // L
     fuelDensity = .81;  // kg/L
-    eDensity = 35e6;    // J/L
+    // eDensity = 35e6;    // J/L
     
     // Control:
     thrust = 40e3;      // N (kg*m/s**2)
@@ -87,6 +87,8 @@ int plane::isDead()
         2 -> (pitch)
         3 -> (yaw)
 */
+// Timestep because of rates of change.
+// For a full explanation of the parameters, please consult the header file.
 void plane::updateParams(float timestep)
 {
     // printf("elapsed: %f\n", timestep);
@@ -151,10 +153,10 @@ void plane::updateParams(float timestep)
     }
 }
 
-void plane::kill()
-{
-    dead = true;
-}
+// void plane::kill()
+// {
+//     dead = true;
+// }
 
 // Flight controls:
 void plane::ctrlPitch(float angle)
@@ -183,10 +185,10 @@ void plane::ctrlYaw(float angle)
     }
 }
 
-void plane::injectControl(float rate)
+/*void plane::injectControl(float rate)
 {
     injectionRate += rate;
-}
+}*/
 
 void plane::thrusterUp(void)
 {
@@ -260,28 +262,28 @@ float plane::getYaw()
 {
     return yaw;
 }
-void plane::setYaw(float newYaw)
+/*void plane::setYaw(float newYaw)
 {
     yaw = newYaw;
-}
+}*/
 
 float plane::getPitch()
 {
     return pitch;
 }
-void plane::setPitch(float newPitch)
+/*void plane::setPitch(float newPitch)
 {
     pitch = newPitch;
-}
+}*/
 
 float plane::getRoll()
 {
     return roll;
 }
-void plane::setRoll(float newRoll)
+/*void plane::setRoll(float newRoll)
 {
     roll = newRoll;
-}
+}*/
 
 
 float plane::getWeight(void)
@@ -301,6 +303,7 @@ float plane::getDrag(void)
     return drag;
 }
 
+// Atmospheric paramters
 float plane::getTemp(void)
 {
     return EARTH_T0 - EARTH_L * position[PLANE_Z];

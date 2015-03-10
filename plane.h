@@ -5,20 +5,20 @@
 #include <cstring>
 #include <cstdio>
 
+// Magic numbers:
 #define PLANE_X 0
 #define PLANE_Y 1
 #define PLANE_Z 2
+// Loss of consciousness parameters. Didn't get to them.
 #define PILOT_D_GLOC 6
 #define PILOT_D_GDIE 25
 #define PILOT_U_GLOC -3
 #define PILOT_LOC_RECOV 12
+// Lift/drag coefficients:
 #define COMBAT_CL 1.75
 #define COMBAT_CD .021
+// Duh:
 #define PI 3.141592654
-
-// #define POINT_RADIUS 0
-// #define POINT_ZENITH 1
-// #define POINT_AZIMUTH 2
 
 class plane
 {
@@ -30,17 +30,17 @@ public:
     
     void updateParams(float timestep);
     
-    // Flight controls:
-    void ctrlPitch(float angle);
-    void ctrlRoll(float angle);
-    void ctrlYaw(float angle);
+    // Flight controls: the magic happens here.
+    // Relative orientation settings:
+    void ctrlPitch(float angle);    // Up/down arrows
+    void ctrlRoll(float angle);     // Left/right arrows
+    void ctrlYaw(float angle);      // Ctrl+left/right arrows
     
-    void injectControl(float rate);
-    
-    void thrusterUp(void);
+    void thrusterUp(void);          // Increase/decrease thrust
     void thrusterDown(void);
+    // void injectControl(float rate);  // Not needed
     
-    // Getters/setters:
+    // Getters for the HUD/main program:
     float getGas(void);
     
     void getPosition(float* buf);
@@ -54,13 +54,13 @@ public:
     float getInjectionRate();
     
     float getYaw();
-    void setYaw(float newYaw);
+    // void setYaw(float newYaw);
     
     float getPitch();
-    void setPitch(float newPitch);
+    // void setPitch(float newPitch);
     
     float getRoll();
-    void setRoll(float newRoll);
+    // void setRoll(float newRoll);
     
     float getWeight(void);
     float getThrust(void);
@@ -75,37 +75,38 @@ public:
 private:
     /* data */
     // Intrinsic:
-    float mass;
-    float wingArea;
-    float maxThrust;
+    float mass;             // kg
+    float wingArea;         // How large is the wing: m^2
+    float maxThrust;        // N. Thrust caps out here.
     
     // Properties:
     float fuel;             // L
-    float fuelDensity;      // kg/L
-    float eDensity;         // J/L
+    float fuelDensity;      // kg/L - mass per volume
+    // float eDensity;         // J/L - energy per volume: deprecated.
     
     // Control:
-    float injectionRate;    // L/s
-    float pitch, roll, yaw;     // These are all angles
+    float injectionRate;    // L/s - fuel consumption rate
+    float pitch, roll, yaw;     // Angles with respect to the ocean plane.
     
     // Mechanics:
-    float position[3];
-    float velocity[3];
-    float acceleration[3];
+    float position[3];      // xyz axes
+    float velocity[3];      // vector (has direction)
+    float acceleration[3];  // sampled
     
     // Forces:
     float weight;   // Acts down
-    float thrust;   // Acts on plane's y axis. This is integrated.
-    float lift;     // Acts on plane's z axis
-    float drag;     // Acts on plane's -y axis
+    float thrust;   // Acts forward
+    float lift;     // Acts 'up'
+    float drag;     // Acts counter velocity
     
-    float gforce;   // Not implemented yet.
+    float gforce;   // Not implemented yet, sorry.
     
-    int dead;
+    int dead;       // semaphore to terminate simulation.
     
-    void kill();
+    // void kill();    // set semaphore. Not needed
     
-    void pitchPlane(float angle);
+    // Helper to orient plane.
+    void pitchPlane(float angle);   
     void yawPlane(float angle);
     void rollPlane(float angle);
 };

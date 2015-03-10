@@ -25,7 +25,7 @@ int wiremode=0;
 int winId;
 float rot = 0;
 
-// Global object ...
+// Global object:
 plane yourPlane;
 
 // Control matrix:
@@ -38,8 +38,8 @@ void init(void)
    glShadeModel (GL_FLAT);
 }
 
-void
-renderText(float x, float y, const char* text) {
+// Totally swiped this from StackOverflow:
+void renderText(float x, float y, const char* text) {
     int viewport[4];
     glGetIntegerv(GL_VIEWPORT, viewport);
     glMatrixMode(GL_PROJECTION);
@@ -56,21 +56,13 @@ renderText(float x, float y, const char* text) {
     glPopMatrix();
 }
 
-void drawText(const char *string){
-    glColor3f(1.0, 1.0, 0);
-    float position[3];
-    yourPlane.getPosition(position);
-    glRasterPos3f(position[PLANE_X], position[PLANE_Y], position[PLANE_Z]);
-    glutBitmapString(GLUT_BITMAP_8_BY_13, (const unsigned char*)string);
-    glutPostRedisplay();
-    // glPopMatrix();
-}
-
 void timer(int v)
 {
     glutTimerFunc(1000/nFPS,timer,v); // restart timer again
 }
 
+// Model the world with this function:
+// Green dots are used as distance markers.
 void drawOcean(void)
 {
     // glLoadIdentity();
@@ -117,26 +109,11 @@ void drawOcean(void)
             }
         }
     glEnd();
-    // glColor3f(1, 1, 1);
     
     glutPostRedisplay();
-    // glFlush();
 }
 
-void xdrawOcean(void)
-{
-    // glLoadIdentity();
-    glBegin(GL_POLYGON);
-        glVertex3f(0,0,0);
-        glVertex3f(0,10,0);
-        glVertex3f(20,10,0);
-        glVertex3f(20,0,0);
-    glEnd();
-    
-    glFlush();
-}
-
-// Use this to adjust the camera.
+// Callback display function:
 void display(void)
 {
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -164,20 +141,8 @@ void display(void)
     float lift = yourPlane.getLift();
     float drag = yourPlane.getDrag();
     
-    // int vmag = 10;
-    // float point[3], up[3];
-    
-    /*
-        point[0] = (position[PLANE_X]+vmag)*cos(pitch)*cos(yaw) - position[PLANE_Y]*(cos(pitch)*sin(yaw)) + position[PLANE_Z]*sin(pitch);
-        point[1] = (position[PLANE_X]+vmag)*(sin(roll)*sin(pitch)*cos(yaw)+cos(roll)*sin(yaw)) + position[PLANE_Y]*(cos(yaw)*cos(roll)-sin(roll)*sin(pitch)*sin(yaw)) - position[PLANE_Z]*sin(roll)*cos(pitch);
-        point[2] = (position[PLANE_X]+vmag)*(sin(roll)*sin(yaw)-cos(roll)*sin(pitch)*cos(yaw)) + position[PLANE_Y]*(cos(roll)*sin(pitch)*sin(yaw)+sin(roll)*cos(yaw)) + position[PLANE_Z]*cos(roll)*cos(pitch);
-        up[0] = position[PLANE_X]*cos(pitch)*cos(yaw) - position[PLANE_Y]*(cos(pitch)*sin(yaw)) + (position[PLANE_Z]+vmag)*sin(pitch);
-        up[1] = position[PLANE_X]*(sin(roll)*sin(pitch)*cos(yaw)+cos(roll)*sin(yaw)) + position[PLANE_Y]*(cos(yaw)*cos(roll)-sin(roll)*sin(pitch)*sin(yaw)) - (position[PLANE_Z]+vmag)*sin(roll)*cos(pitch);
-        up[2] = position[PLANE_X]*(sin(roll)*sin(yaw)-cos(roll)*sin(pitch)*cos(yaw)) + position[PLANE_Y]*(cos(roll)*sin(pitch)*sin(yaw)+sin(roll)*cos(yaw)) + (position[PLANE_Z]+vmag)*cos(roll)*cos(pitch);
-    */
-    
-    // glPushMatrix();
     glLoadIdentity();
+    // Stare at +x for my conventions:
     gluLookAt (0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0);
     
     glPushMatrix();
@@ -186,14 +151,13 @@ void display(void)
     glRotatef(-pitch*180/PI, 0, 1, 0);
     glRotatef(-yaw*180/PI, 0, 0, 1);
     
-    // glTranslatef(-rot, -rot, -50);
     rot += .1;
     glTranslatef(-position[PLANE_X], -position[PLANE_Y], -position[PLANE_Z]);
-    // printf("%f %f %f\n", position[PLANE_X], position[PLANE_Y], position[PLANE_Z]);
     
     drawOcean();
     glPopMatrix();
     
+    // HUD stuff:
     char posbuf[64], dirbuf[64], velobuf[64], forcebuf[64];
     char accelbuf[64];
     char miscbuf[32];
@@ -212,15 +176,13 @@ void display(void)
     sprintf(miscbuf, "%.2fkPa %.2fCelsius", yourPlane.getPressure()/1000, yourPlane.getTemp()-273.15);
     renderText(0, 91, miscbuf);
     
+    // Out of gas!!
     if(yourPlane.getGas()<=0)
-        renderText(0, 150, "Out of gas :(");
+        renderText(0, 150, "Out of gas. Recommend eject with 'q'");
     
     glutPostRedisplay();
     
     glFlush();
-    
-    // printf("x: %f y: %f z: %f", position[PLANE_X], position[PLANE_Y], position[PLANE_Z]);
-    // printf("Y: %f, P: %f, R: %f\n", yaw, pitch, roll);
     
     /*  Check for control:
         asciiPressed[256]
@@ -229,16 +191,13 @@ void display(void)
     if( asciiPressed[(unsigned char)'j'] )
     {
         yourPlane.thrusterDown();
-        // printf("%f\n", yourPlane.getInjectionRate());
     }
     else if (asciiPressed[(unsigned char)'k'])
     {
         yourPlane.thrusterUp();
-        // printf("%f\n", yourPlane.getInjectionRate());
     }
     
     // Directional:
-    
     if(specialPressed[PRESS_LEFT])
     {
         if( specialPressed[PRESS_CTRL_R] || specialPressed[PRESS_CTRL_L] )
@@ -247,7 +206,6 @@ void display(void)
         }
         else
         {
-            // printf("LEFT\n");
             yourPlane.ctrlRoll(-PI/180);
         }
     }
@@ -255,24 +213,20 @@ void display(void)
     {
         if( specialPressed[PRESS_CTRL_R] || specialPressed[PRESS_CTRL_L] )
         {
-            // printf("CTRL_RIGHT\n");
             yourPlane.ctrlYaw(-PI/180/3);
         }
         else
         {
-            // printf("RIGHT\n");
             yourPlane.ctrlRoll(PI/180);
         }
     }
     
     if(specialPressed[PRESS_DOWN])
     {
-        // printf("DOWN\n");
         yourPlane.ctrlPitch(-PI/180/4);
     }
     else if(specialPressed[PRESS_UP])
     {
-        // printf("UP\n");
         yourPlane.ctrlPitch(PI/180/4);
     }
     
@@ -287,52 +241,17 @@ void display(void)
     
     if(yourPlane.isDead())
     {
-        printf("Plane has crashed.\n");
+        printf("You crashed an F-14. You just wasted \033[32m$38 million\033[0m in taxpayer money. Nice one.\n");
         glutDestroyWindow(winId);
         return;
     }
     if(position[PLANE_X]>4000 || position[PLANE_Y]>4000 || position[PLANE_X]<0 || position[PLANE_Y] < 0)
     {
-        printf("Out of bounds :(\n");
+        printf("Out of bounds: self-destructed.\n");
         glutDestroyWindow(winId);
         return;
     }
     
-    glutSwapBuffers();
-}
-
-void xdisplay(void)
-{
-    char buf[32];
-    curF++;
-    
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
-    glPushMatrix();
-    gluLookAt (0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0);
-         
-    glRotatef (-45, 0.0, 0.0, 1.0);
-    glRotatef (45, 1.0, -1.0, 0.0);
-    rot+=1;
-    
-    glTranslatef(0, 0, -50);
-    
-    glPushMatrix();
-    drawOcean();
-    glPopMatrix();
-    
-    curClock=clock();
-    float elapsed=(curClock-startClock)/(float)CLOCKS_PER_SEC;
-    // if(elapsed>1.0f){
-        float fps=(float)(curF-prevF)/elapsed;
-        // sprintf(buf, "%f", fps);
-        // drawText(buf);
-        prevF=curF;
-        startClock=curClock;
-    // }
-    
-
-    glPopMatrix();
     glutSwapBuffers();
 }
 
@@ -342,16 +261,8 @@ void askey(unsigned char key, int x, int y)
     
     switch(key)
     {
-        // case 'k':   // More gas
-        // break;
-        // case 'j':   // Less gas
-        // break;
-        // case 'K':   // More more gas
-        // break;
-        // case 'J':    // Less less gas
-        // break;
         case 'q':    // Quit the simulation
-            printf("Ejected. Quitter.\n");
+            printf("Ejected.\n");
             glutDestroyWindow(winId);
         break;
         default:
@@ -361,23 +272,8 @@ void askey(unsigned char key, int x, int y)
 
 void dirkey(int key, int x, int y)
 {
-    // switch(key)
-    // {
         if(key>=0x64 && key < 0x74)
             specialPressed[key-0x64] ^= 0x1;
-        /*case GLUT_KEY_LEFT:     // Roll left
-        break;
-        case GLUT_KEY_UP:       // Pitch down
-        break;
-        case GLUT_KEY_RIGHT:    // Roll right
-        break;
-        case GLUT_KEY_DOWN:     // Pitch up
-        break;
-        case GLUT_KEY_CTRL_L:   // Yaw active
-        case GLUT_KEY_CTRL_R:
-        default:
-        break;*/
-    // }
 }
 
 void reshape (int w, int h)
@@ -386,8 +282,6 @@ void reshape (int w, int h)
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ();
     glFrustum (-w/30, w/30, -h/30, h/30, 100, 2000);
-    // glFrustum (-2.0, 2.0, -2.0, 2.0, 1, 10.0);
-    // glOrtho(0, 2000, 0, 2000, 0, 2000);
     glMatrixMode (GL_MODELVIEW);
     glLoadIdentity();
 }
@@ -397,7 +291,7 @@ int main(int argc, char** argv)
     glutInit(&argc, argv);
     glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB);
     glutInitWindowSize (500, 500);
-    glutInitWindowPosition (100, 100);
+    glutInitWindowPosition (500, 100);
     winId = glutCreateWindow ("Fightsim and Jetsim");
     
     // Starter up!
@@ -406,15 +300,17 @@ int main(int argc, char** argv)
     // Callbacks:
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
-    // glutMouseFunc(mouse);
+    // glutMouseFunc(mouse); // Never used.
     glutKeyboardFunc(askey);
     glutKeyboardUpFunc(askey);
     glutSpecialFunc(dirkey);
     glutSpecialUpFunc(dirkey);
     
-    glutTimerFunc(100,timer,nFPS); // a periodic timer. Usually used for updating animation
+    // Timer:
+    glutTimerFunc(100,timer,nFPS);
     startClock=clock();
     
+    // Hajime!
     glutMainLoop();
     
     return 0;

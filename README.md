@@ -27,7 +27,6 @@ README (Copy-pasted from compass)
     - Rules and physics:
         - You have limited fuel, which has mass. Running out of fuel will kill the thrust output.
         - Aerodynamic forces will be at play. (Weight, lift, thrust, drag).
-        - Atmosphere decreases in pressure and temperature at higher altitudes, affecting drag and lift.
         - Crashing into the ocean will terminate the simulation.
         - Flying out of bounds will terminate the simulation.
         - You have momentum. Turning right around will cause a stall and will more than likely prove fatal.
@@ -35,6 +34,9 @@ README (Copy-pasted from compass)
         - Thrust is controlled by user input. Always points forward.
         - Lift depends on speed and elevation (because of temperature and air pressure/density). Always points in the plane's 'up' direction.
         - Drag depends on speed and elevation. Always points counter velocity vector.
+        - Atmosphere decreases in pressure and temperature at higher altitudes.
+        - There is a rudimentary HUD, which shows some useful debugging information.
+        - Fun fact: physics were modeled after an F-14 Tomcat. I know it's nowhere near perfect, but it works on some believable level, I guess. Also, for some reason (I didn't have time/forgot to implement jet engines), you only have afterburners.
 
-Location of Video Demo
-
+- Location of Video Demo
+    - http://youtu.be/elCjoBffddc
