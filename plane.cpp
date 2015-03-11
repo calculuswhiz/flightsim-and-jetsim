@@ -147,7 +147,7 @@ void plane::updateParams(float timestep)
                     velocity[PLANE_Y]*velocity[PLANE_Y] + 
                     velocity[PLANE_Z]*velocity[PLANE_Z];
     // printf("%f\n", rho);
-    lift = .5*rho*(vmagsq*cos(pitch)*cos(pitch)*cos(yaw)*cos(yaw))*wingArea*COMBAT_CL;
+    lift = .5*rho*(vmagsq*cos(pitch)*cos(yaw))*wingArea*COMBAT_CL;
     drag = .5*rho*(vmagsq)*wingArea*COMBAT_CD;
     
     weight = mass*EARTH_G;
