@@ -14,7 +14,7 @@ plane::plane()
     
     // Control:
     thrust = 40e3;      // N (kg*m/s**2)
-    roll = 0; pitch = 0; yaw = 0;   // radians
+    roll = PI; pitch = 0; yaw = 0;   // radians
     // PI mode for testing:
     // roll = 0; pitch = PI; yaw = 0;   // radians
     
@@ -22,7 +22,7 @@ plane::plane()
     position[PLANE_X]=2500;     // m
     position[PLANE_Y]=5000;     // m
     position[PLANE_Z]=100;      // m
-    velocity[PLANE_X]=100;        // m/s
+    velocity[PLANE_X]=1;        // m/s
     velocity[PLANE_Y]=0;        // m/s
     velocity[PLANE_Z]=0;        // m/s
     
@@ -121,6 +121,12 @@ void plane::updateParams(float timestep)
     acceleration[PLANE_Y] = dvy;
     acceleration[PLANE_Z] = dvz;
     
+    float amag = sqrt(acceleration[PLANE_X]*acceleration[PLANE_X] + 
+                    acceleration[PLANE_Y]*acceleration[PLANE_Y] + 
+                    acceleration[PLANE_Z]*acceleration[PLANE_Z]);
+    gforce = amag*cos(2*roll)*cos(pitch)/EARTH_G;
+    // printf("%f\n", gforce);
+    
     // Gas update:
     if(fuel>0)
     {
@@ -142,7 +148,7 @@ void plane::updateParams(float timestep)
                     velocity[PLANE_Y]*velocity[PLANE_Y] + 
                     velocity[PLANE_Z]*velocity[PLANE_Z];
     // printf("%f\n", rho);
-    lift = .5*rho*(vmagsq*cos(pitch)*cos(yaw))*wingArea*COMBAT_CL;
+    lift = .5*rho*(vmagsq*cos(pitch)*cos(pitch)*cos(yaw)*cos(yaw))*wingArea*COMBAT_CL;
     drag = .5*rho*(vmagsq)*wingArea*COMBAT_CD;
     
     weight = mass*EARTH_G;
@@ -216,6 +222,11 @@ void plane::rollPlane(float angle)
 }
 
 // Getters and setters:
+float plane::getGforce(void)
+{
+    return gforce;
+}
+
 float plane::getGas(void)
 {
     return fuel;

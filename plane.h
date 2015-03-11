@@ -41,6 +41,8 @@ public:
     // void injectControl(float rate);  // Not needed
     
     // Getters for the HUD/main program:
+    float getGforce(void);
+    
     float getGas(void);
     
     void getPosition(float* buf);

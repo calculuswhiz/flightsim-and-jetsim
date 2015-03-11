@@ -177,6 +177,8 @@ void display(void)
     renderText(0, 78, miscbuf);
     sprintf(miscbuf, "%.2fkPa %.2fCelsius", yourPlane.getPressure()/1000, yourPlane.getTemp()-273.15);
     renderText(0, 91, miscbuf);
+    sprintf(miscbuf, "geez:%.2f", yourPlane.getGforce());
+    renderText(0, 104, miscbuf);
     
     // if(sin(yaw)<=sqrt(2)/2 && sin(yaw)>=-sqrt(2)/2)
     // {
