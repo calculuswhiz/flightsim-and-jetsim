@@ -37,7 +37,7 @@ int specialPressed[256]={0};  // Left up right down
 void init(void) 
 {
    glClearColor (0.0, 0.0, 0.0, 0.0);
-   glShadeModel (GL_FLAT);
+   glShadeModel (GL_SMOOTH);
 }
 
 // Totally swiped this from StackOverflow:
@@ -71,17 +71,17 @@ void drawOcean(void)
     // float oceanSize = OCEANSIZE;
     glColor3f (.5, .5, 1.0);
     glBegin(GL_POLYGON);
-        /*glColor3f(1.0, 0.0, 0.0);*/ glVertex3f(0,0,0);
-        /*glColor3f(0.0, 1.0, 0.0);*/ glVertex3f(0,OCEANSIZE,0);
-        /*glColor3f(1.0, 0.0, 0.0);*/ glVertex3f(OCEANSIZE,OCEANSIZE,0);
-        /*glColor3f(0.0, 1.0, 0.0);*/ glVertex3f(OCEANSIZE,0,0);
+        glColor3f(1.0, 0.0, 0.0); glVertex3f(0,0,0);
+        glColor3f(0.0, 1.0, 0.0); glVertex3f(0,OCEANSIZE,0);
+        glColor3f(0.0, 0.0, 1.0); glVertex3f(OCEANSIZE,OCEANSIZE,0);
+        glColor3f(0.0, 1.0, 1.0); glVertex3f(OCEANSIZE,0,0);
     glEnd();
     
     glBegin(GL_TRIANGLES);
-        glColor3f(.5, 0, 0);
-        glVertex3f(0, 0, 0);
-        glVertex3f(0, OCEANSIZE, 0);
-        glVertex3f(0, OCEANSIZE/2, OCEANSIZE/2);
+        // glColor3f(.5, 0, 0);
+        glColor3f(1.0, 0.0, 0.0); glVertex3f(0, 0, 0);
+        glColor3f(0.0, 1.0, 0.0); glVertex3f(0, OCEANSIZE, 0);
+        glColor3f(1.0, 0.0, 0.0); glVertex3f(0, OCEANSIZE/2, OCEANSIZE/2);
         
         glColor3f(.5, .5, 0);
         glVertex3f(0, 0, 0);
@@ -264,7 +264,7 @@ void display(void)
     }
     if(position[PLANE_X]>OCEANSIZE || position[PLANE_Y]>OCEANSIZE || position[PLANE_X]<0 || position[PLANE_Y] < 0)
     {
-        printf("Out of bounds: self-destructed.\n");
+        printf("Out of bounds: self-destructed. (%f, %f)\n", position[PLANE_X], position[PLANE_Y]);
         glutDestroyWindow(winId);
         return;
     }
