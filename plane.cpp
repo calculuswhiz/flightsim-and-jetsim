@@ -90,12 +90,14 @@ int plane::isDead()
 void plane::updateParams(float timestep)
 {
     // printf("elapsed: %f\n", timestep);
+    // Update position:
     position[PLANE_X] += timestep * velocity[PLANE_X];
     position[PLANE_Y] += timestep * velocity[PLANE_Y];
     position[PLANE_Z] += timestep * velocity[PLANE_Z];
     
     // printf("%f\n", position[PLANE_X]);
     
+    // Update velocity:
     float vmagsq = velocity[PLANE_X]*velocity[PLANE_X] + 
                     velocity[PLANE_Y]*velocity[PLANE_Y] + 
                     velocity[PLANE_Z]*velocity[PLANE_Z];
@@ -115,6 +117,7 @@ void plane::updateParams(float timestep)
     velocity[PLANE_Y] += dvy*timestep;
     velocity[PLANE_Z] += dvz*timestep;
     
+    // Sample acceleration:
     acceleration[PLANE_X] = dvx;
     acceleration[PLANE_Y] = dvy;
     acceleration[PLANE_Z] = dvz;
