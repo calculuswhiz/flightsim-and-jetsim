@@ -125,7 +125,8 @@ void plane::updateParams(float timestep)
     float amag = sqrt(acceleration[PLANE_X]*acceleration[PLANE_X] + 
                     acceleration[PLANE_Y]*acceleration[PLANE_Y] + 
                     acceleration[PLANE_Z]*acceleration[PLANE_Z]);
-    // gforce = amag*cos(roll)*cos(pitch)/EARTH_G;
+    // I have no idea how to do this:
+    gforce = (EARTH_G-amag)*fabs(cos(roll))*cos(pitch)/EARTH_G;
     // printf("%f\n", amag/pow(1+vmagsq, 1.5));
     // printf("%f\n", gforce);
     
